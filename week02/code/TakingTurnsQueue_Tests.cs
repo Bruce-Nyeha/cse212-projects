@@ -11,7 +11,7 @@ public class TakingTurnsQueueTests
     // Scenario: Create a queue with the following people and turns: Bob (2), Tim (5), Sue (3) and
     // run until the queue is empty
     // Expected Result: Bob, Tim, Sue, Bob, Tim, Sue, Tim, Sue, Tim, Tim
-    // Defect(s) Found: 
+    // Defect(s) Found: None. The finite turn subtraction and queue removal logic works correctly.
     public void TestTakingTurnsQueue_FiniteRepetition()
     {
         var bob = new Person("Bob", 2);
@@ -43,7 +43,7 @@ public class TakingTurnsQueueTests
     // Scenario: Create a queue with the following people and turns: Bob (2), Tim (5), Sue (3)
     // After running 5 times, add George with 3 turns.  Run until the queue is empty.
     // Expected Result: Bob, Tim, Sue, Bob, Tim, Sue, Tim, George, Sue, Tim, George, Tim, George
-    // Defect(s) Found: 
+    // Defect(s) Found: None. Adding a player midway preserves the correct circular queue execution order.
     public void TestTakingTurnsQueue_AddPlayerMidway()
     {
         var bob = new Person("Bob", 2);
@@ -85,7 +85,7 @@ public class TakingTurnsQueueTests
     // Scenario: Create a queue with the following people and turns: Bob (2), Tim (Forever), Sue (3)
     // Run 10 times.
     // Expected Result: Bob, Tim, Sue, Bob, Tim, Sue, Tim, Sue, Tim, Tim
-    // Defect(s) Found: 
+    // Defect(s) Found: Re-enqueue logic was missing for infinite turns. Players with 0 turns were treated as out of turns and permanently removed from the queue after one round instead of looping forever.
     public void TestTakingTurnsQueue_ForeverZero()
     {
         var timTurns = 0;
@@ -116,7 +116,7 @@ public class TakingTurnsQueueTests
     // Scenario: Create a queue with the following people and turns: Tim (Forever), Sue (3)
     // Run 10 times.
     // Expected Result: Tim, Sue, Tim, Sue, Tim, Sue, Tim, Tim, Tim, Tim
-    // Defect(s) Found: 
+    // Defect(s) Found: Re-enqueue logic was missing for negative turns. Players with turns less than 0 were dropped entirely after a single iteration instead of retaining infinite turns.
     public void TestTakingTurnsQueue_ForeverNegative()
     {
         var timTurns = -3;
@@ -143,7 +143,7 @@ public class TakingTurnsQueueTests
     [TestMethod]
     // Scenario: Try to get the next person from an empty queue
     // Expected Result: Exception should be thrown with appropriate error message.
-    // Defect(s) Found: 
+    // Defect(s) Found: None. The empty queue handling correctly throws an InvalidOperationException when no one is left in line.
     public void TestTakingTurnsQueue_Empty()
     {
         var players = new TakingTurnsQueue();
